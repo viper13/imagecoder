@@ -12,21 +12,7 @@ Window {
         id: filesModel
         path: "d:\\images\\"
     }
-    ListModel {
-        id: testModel
-        ListElement {
-            name: "first"
-        }
-        ListElement {
-            name: "second"
-        }
-        ListElement {
-            name: "third"
-        }
-        ListElement {
-            name: "forth"
-        }
-    }
+
     Item {
         anchors.fill: parent
         anchors.margins: 40
@@ -34,6 +20,7 @@ Window {
             id: fileDelegate
             Row {
                 height: 20
+                spacing: 10
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
                     width: 20
@@ -45,6 +32,20 @@ Window {
                     width: 100
                     text: name
                     wrapMode: Text.WrapAnywhere
+                }
+
+                Rectangle {
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 10
+                    height: 10
+                    color: {
+                        switch (status) {
+                        case FileStatus.Unknown : return "black"
+                        case FileStatus.Unsupported : return "red"
+                        case FileStatus.Converted : return "green"
+                        case FileStatus.Processing : return "yellow"
+                        }
+                    }
                 }
 
                 Text {

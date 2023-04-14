@@ -5,6 +5,19 @@
 #include <QQmlEngine>
 #include <vector>
 
+namespace FileStatus
+{
+    Q_NAMESPACE
+    enum Status
+    {
+        Unknown,
+        Unsupported,
+        Converted,
+        Processing
+    };
+    Q_ENUM_NS(Status)
+}
+
 class FilesModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -13,15 +26,19 @@ class FilesModel : public QAbstractListModel
         QString name;
         QString ext;
         qint64 size;
+        FileStatus::Status status;
     };
 
-    enum Params : int
+
+
+    enum Params
     {
         Name = 0,
         Extention = 1,
         Size = 2,
+        Status = 3,
 
-        Last = 3
+        Last = 4
     };
 
     Q_PROPERTY(QString path READ getPath WRITE setPath NOTIFY pathChanged)

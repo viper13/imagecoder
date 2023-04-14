@@ -18,7 +18,7 @@ void FilesModel::update()
     {
         QFileInfo fileInfo(it.next());
         std::cout << fileInfo.fileName().toStdString() << " " << fileInfo.size() << "B" << std::endl;
-        modelData.push_back({fileInfo.fileName(), "", fileInfo.size()});
+        modelData.push_back({fileInfo.fileName(), "", fileInfo.size(), FileStatus::Unknown});
     }
     endResetModel();
 }
@@ -36,6 +36,7 @@ QVariant FilesModel::data(const QModelIndex &index, int role) const
         case Params::Name : return item.name;
         case Params::Extention : return item.ext;
         case Params::Size : return item.size;
+        case Params::Status : return item.status;
     }
     return QVariant();
 }
@@ -60,6 +61,7 @@ QHash<int, QByteArray> FilesModel::roleNames() const
     return {
         {static_cast<int>(Params::Name), "name"},
         {static_cast<int>(Params::Extention), "ext"},
-        {static_cast<int>(Params::Size), "size"}
+        {static_cast<int>(Params::Size), "size"},
+        {static_cast<int>(Params::Status), "status"}
     };
 }
