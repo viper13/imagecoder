@@ -18,40 +18,50 @@ Window {
         anchors.margins: 40
         Component {
             id: fileDelegate
-            Row {
-                height: 20
-                spacing: 10
-                Text {
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: 20
-                    text: index
-                }
-
-                Text {
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: 100
-                    text: name
-                    wrapMode: Text.WrapAnywhere
-                }
-
-                Rectangle {
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: 10
-                    height: 10
-                    color: {
-                        switch (status) {
-                        case FileStatus.Unknown : return "black"
-                        case FileStatus.Unsupported : return "red"
-                        case FileStatus.Converted : return "green"
-                        case FileStatus.Processing : return "yellow"
-                        }
+            MouseArea {
+                width: childrenRect.width
+                height: childrenRect.height
+                onClicked: function (mouse) {
+                    if (mouse.button === Qt.LeftButton) {
+                        filesModel.compressFile(index)
                     }
                 }
 
-                Text {
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: 50
-                    text: size
+                Row {
+                    height: 20
+                    spacing: 10
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 20
+                        text: index
+                    }
+
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 100
+                        text: name
+                        wrapMode: Text.WrapAnywhere
+                    }
+
+                    Rectangle {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 10
+                        height: 10
+                        color: {
+                            switch (status) {
+                            case FileStatus.Unknown : return "black"
+                            case FileStatus.Unsupported : return "red"
+                            case FileStatus.Converted : return "green"
+                            case FileStatus.Processing : return "yellow"
+                            }
+                        }
+                    }
+
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 50
+                        text: size
+                    }
                 }
             }
         }

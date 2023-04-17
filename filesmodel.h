@@ -24,6 +24,7 @@ class FilesModel : public QAbstractListModel
     struct FileData
     {
         QString name;
+        std::string fullName;
         QString ext;
         qint64 size;
         FileStatus::Status status;
@@ -59,6 +60,8 @@ public:
     void setPath(const QString& value);
 
     const QString& getPath() const { return path; }
+
+    Q_INVOKABLE void compressFile(const int index) const;
 
 signals:
     void pathChanged();
