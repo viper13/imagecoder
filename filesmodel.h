@@ -12,7 +12,8 @@ namespace FileStatus
     {
         Unknown,
         Unsupported,
-        Converted,
+        Compressed,
+        NotCompressed,
         Processing
     };
     Q_ENUM_NS(Status)
@@ -25,7 +26,7 @@ class FilesModel : public QAbstractListModel
     {
         QString name;
         std::string fullName;
-        QString ext;
+        QString suffix;
         qint64 size;
         FileStatus::Status status;
     };
@@ -35,11 +36,10 @@ class FilesModel : public QAbstractListModel
     enum Params
     {
         Name = 0,
-        Extention = 1,
-        Size = 2,
-        Status = 3,
+        Size = 1,
+        Status = 2,
 
-        Last = 4
+        Last = 3
     };
 
     Q_PROPERTY(QString path READ getPath WRITE setPath NOTIFY pathChanged)
@@ -48,8 +48,6 @@ public:
     explicit FilesModel(QObject *parent = nullptr);
 
     virtual ~FilesModel() override = default;
-
-    void update();
 
     QVariant data(const QModelIndex &index, int role) const override;
 
@@ -61,12 +59,20 @@ public:
 
     const QString& getPath() const { return path; }
 
-    Q_INVOKABLE void compressFile(const int index) const;
+    Q_INVOKABLE void compressFile(const int idx);
+
+    Q_INVOKABLE void decompressFile(const int idx);
+
+    Q_INVOKABLE void update();
 
 signals:
     void pathChanged();
+    void errorHappens(const QString message) const;
 
 private:
+    void finishPrecessing(const std::string &fileName);
+    FileStatus::Status getFileStatusBySuffix(const QString& suffix) const;
+
     std::vector<FileData> modelData;
     QString path;
 };

@@ -1,5 +1,6 @@
 QT += quick
 QT += qml
+
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -15,8 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    filesmodel.cpp \
-    compressor/compressor.cpp
+    filesmodel.cpp
 
 RESOURCES += qml.qrc
 
@@ -32,5 +32,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    filesmodel.h \
-    compressor/compressor.h
+    filesmodel.h
+
+unix|win32: LIBS += -L$$PWD/./ -lCoder
+
+INCLUDEPATH += $$PWD/Coder
+DEPENDPATH += $$PWD/Coder
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/./Coder.lib
+else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/./libCoder.a
